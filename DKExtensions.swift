@@ -150,6 +150,11 @@ extension String {
     func trimWhitespaces() -> String {
         return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
     }
+    
+    // Remove all white spaces and all new lines \n
+    func removeAllNewlinesAndIllegalChars() -> String {
+        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+    }
 }
 
 extension UIImage {
