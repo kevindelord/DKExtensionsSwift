@@ -102,6 +102,19 @@ extension NSDate {
 
 extension String {
 
+    static func randomNumericString(length: Int) -> NSString {
+
+        let letters : NSString = "0123456789"
+
+        var randomString : NSMutableString = NSMutableString(capacity: length)
+        for (var i=0; i < length; i++){
+            var length = UInt32 (letters.length)
+            var rand = arc4random_uniform(length)
+            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+        }
+        return randomString
+    }
+
     static func randomString(length: Int) -> NSString {
 
         let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
