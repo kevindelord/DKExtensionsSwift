@@ -248,6 +248,10 @@ extension NSLocale {
             // it's just in Simulator and i have no idear for a good Workaround
             //
             return self.displayNameForKey(NSLocaleCountryCode, value: code)! as String
-        })
+            }).sorted({
+                //
+                // now sort the Array and return the Sorted one
+                $0 < $1
+            })
     }
 }
