@@ -250,7 +250,8 @@ extension NSLocale {
             return self.displayNameForKey(NSLocaleCountryCode, value: code)! as String
             }).sorted({
                 //
-                // now sort the Array and return the Sorted one
+                // We need to return a SortedArray, we use the Default function to Sort this array
+                //
                 $0 < $1
             })
     }
