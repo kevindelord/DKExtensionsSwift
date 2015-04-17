@@ -289,6 +289,6 @@ extension UIDevice {
     //
     func hasSimCard() -> Bool {
         var networkInfo = CTTelephonyNetworkInfo()
-        return (networkInfo.subscriberCellularProvider.mobileCountryCode != nil)
+        return (networkInfo.subscriberCellularProvider?.mobileCountryCode? != nil)
     }
 }
