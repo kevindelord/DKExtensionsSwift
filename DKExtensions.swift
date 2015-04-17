@@ -282,7 +282,7 @@ extension UIDevice {
     // if there are no carrier Informations, there is no sim and this function will return false
     //
     // For more informations read Apple Doc's for CTCarrier's mobileCountryCode:
-    // From this Doc:
+    // From this Doc (https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/CTCarrier/index.html#//apple_ref/occ/instp/CTCarrier/mobileCountryCode):
     //
     // The value for this property is nil if any of the following apply:
     // - There is no SIM card in the device. [...]
