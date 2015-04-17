@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreTelephony
 
 // MARK: - Debug
 
@@ -272,5 +273,22 @@ extension NSLocale {
                 //
                 $0 < $1
             })
+    }
+}
+
+extension UIDevice {
+    //
+    // To check if the current Device has a SimCard or not, we will read the Carrier informations
+    // if there are no carrier Informations, there is no sim and this function will return false
+    //
+    // For more informations read Apple Doc's for CTCarrier's mobileCountryCode:
+    // From this Doc (https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/CTCarrier/index.html#//apple_ref/occ/instp/CTCarrier/mobileCountryCode):
+    //
+    // The value for this property is nil if any of the following apply:
+    // - There is no SIM card in the device. [...]
+    //
+    func hasSimCard() -> Bool {
+        var networkInfo = CTTelephonyNetworkInfo()
+        return (networkInfo.subscriberCellularProvider.mobileCountryCode != nil)
     }
 }
