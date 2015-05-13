@@ -52,6 +52,26 @@ extension UIView {
         var nib = NSBundle.mainBundle().loadNibNamed(name, owner: self, options: nil) as [AnyObject]!
         return nib[0] as UIView
     }
+
+    /**
+    * creates constraints to adjust the child to match the parents dimensions and position
+    */
+    func matchParentConstraints() -> [NSLayoutConstraint]{
+        if let parent = self.superview? {
+            self.setTranslatesAutoresizingMaskIntoConstraints(false)
+
+            var bottomConstraint = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: parent, attribute: .Bottom, multiplier: 1, constant: 0)
+            var topConstraint = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: parent, attribute: .Top, multiplier: 1, constant: 0)
+            var leftConstraint = NSLayoutConstraint(item: self, attribute: .Left, relatedBy: .Equal, toItem: parent, attribute: .Left, multiplier: 1, constant: 0)
+            var rightConstraint = NSLayoutConstraint(item: self, attribute: .Right, relatedBy: .Equal, toItem: parent, attribute: .Right, multiplier: 1, constant: 0)
+
+            var new_constaints = [leftConstraint,rightConstraint,topConstraint,bottomConstraint]
+            parent.addConstraints(new_constaints)
+            return new_constaints
+        } else {
+            return []
+        }
+    }
 }
 
 extension UIAlertView {
