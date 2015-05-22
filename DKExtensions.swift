@@ -73,6 +73,20 @@ extension UIView {
             return []
         }
     }
+    
+    /**
+    * creates gradient view of given size with given colors
+    */
+    class func gradientLayer(rect: CGRect, topColor: UIColor, bottomColor: UIColor) -> UIView {
+        
+        var gradientLayerView: UIView = UIView(frame: rect)
+        var gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = gradientLayerView.bounds
+        gradient.colors = [topColor.CGColor, bottomColor.CGColor]
+        gradientLayerView.layer.insertSublayer(gradient, atIndex: 0)
+        return gradientLayerView
+    }
+
 }
 
 extension UIAlertView {
