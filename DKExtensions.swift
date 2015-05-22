@@ -83,6 +83,8 @@ extension UIView {
         var gradient: CAGradientLayer = CAGradientLayer()
         gradient.frame = gradientLayerView.bounds
         gradient.colors = [topColor.CGColor, bottomColor.CGColor]
+        gradient.startPoint = CGPointMake(0, -1.0)
+        gradient.endPoint = CGPointMake(0, 1.0)
         gradientLayerView.layer.insertSublayer(gradient, atIndex: 0)
         return gradientLayerView
     }
