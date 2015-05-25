@@ -49,6 +49,7 @@ extension UIView {
         self.layer.masksToBounds = true
     }
 
+    // TODO: use DKHelper
     class func loadFromNib(name: String!) -> UIView {
         var nib = NSBundle.mainBundle().loadNibNamed(name, owner: self, options: nil) as [AnyObject]!
         return nib[0] as UIView
@@ -114,6 +115,7 @@ extension UIAlertView {
 }
 
 extension NSBundle {
+    // TODO: use DKHelper
     class func entryInPListForKey(key: String) -> String {
         let value = NSBundle.mainBundle().objectForInfoDictionaryKey(key) as? String
         if value == nil {
@@ -124,6 +126,7 @@ extension NSBundle {
 }
 
 extension NSDate {
+    // TODO: use DKHelper
     func fullDisplayTime() -> String! {
         return "\(self.day()) \(self.monthName()) - \(self.hour()):\(self.minute())"
     }
@@ -139,6 +142,7 @@ extension NSDate {
 
 extension String {
 
+    // TODO: use DKHelper
     static func randomNumericString(length: Int) -> NSString {
 
         let letters : NSString = "0123456789"
@@ -210,6 +214,7 @@ extension String {
 extension UIImage {
 
     class func scaleImage(image: UIImage!, size: CGSize) -> UIImage! {
+          // TODO: use DKHelper
         UIGraphicsBeginImageContext(size)
         image.drawInRect(CGRectMake(0,0,size.width,size.height))
         let newImage = UIGraphicsGetImageFromCurrentImageContext() as UIImage
@@ -218,6 +223,7 @@ extension UIImage {
     }
 
     func resizedImageToScreenSize() -> UIImage! {
+          // TODO: use DKHelper
         var screenSize = UIScreen.mainScreen().bounds as CGRect
         var size = CGSizeMake(0, screenSize.size.height) as CGSize
         var ratio = 0.0 as CGFloat
