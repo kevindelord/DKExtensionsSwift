@@ -91,16 +91,6 @@ extension UIAlertView {
 
 extension String {
 
-    static func stringFromDate(date: NSDate?, style: NSDateFormatterStyle) -> String? {
-        if (date == nil) {
-            return nil
-        }
-        var df = NSDateFormatter()
-        df.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-        df.dateStyle = style
-        return df.stringFromDate(date!)
-    }
-
     func isUserName() -> Bool {
         let regex = "[äÄüÜöÖßA-Z0-9a-z_\\s-]+"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)!
