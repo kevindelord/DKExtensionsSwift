@@ -48,35 +48,10 @@ extension UIView {
         self.layer.cornerRadius = radius
         self.layer.masksToBounds = true
     }
-
-    // TODO: use DKHelper
-    class func loadFromNib(name: String!) -> UIView {
-        var nib = NSBundle.mainBundle().loadNibNamed(name, owner: self, options: nil) as [AnyObject]!
-        return nib[0] as UIView
-    }
-
     /**
-    * creates constraints to adjust the child to match the parents dimensions and position
-    */
-    func matchParentConstraints() -> [NSLayoutConstraint]{
-        if let parent = self.superview? {
-            self.setTranslatesAutoresizingMaskIntoConstraints(false)
-
-            var bottomConstraint = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: parent, attribute: .Bottom, multiplier: 1, constant: 0)
-            var topConstraint = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: parent, attribute: .Top, multiplier: 1, constant: 0)
-            var leftConstraint = NSLayoutConstraint(item: self, attribute: .Left, relatedBy: .Equal, toItem: parent, attribute: .Left, multiplier: 1, constant: 0)
-            var rightConstraint = NSLayoutConstraint(item: self, attribute: .Right, relatedBy: .Equal, toItem: parent, attribute: .Right, multiplier: 1, constant: 0)
-
-            var new_constaints = [leftConstraint,rightConstraint,topConstraint,bottomConstraint]
-            parent.addConstraints(new_constaints)
-            return new_constaints
-        } else {
-            return []
-        }
-    }
-    
-    /**
-    * creates gradient view of given size with given colors
+    * Creates gradient view of given size with given colors
+    * This function already exist in the DKHelper, but does not work in Swift.
+    * The start point has to be -1.0 instead of 0.0 in Obj-C.
     */
     class func gradientLayer(rect: CGRect, topColor: UIColor, bottomColor: UIColor) -> UIView {
         
@@ -114,127 +89,22 @@ extension UIAlertView {
     }
 }
 
-extension NSBundle {
-    // TODO: use DKHelper
-    class func entryInPListForKey(key: String) -> String {
-        let value = NSBundle.mainBundle().objectForInfoDictionaryKey(key) as? String
-        if value == nil {
-            NSException(name: "Plist error", reason: "Invalid \(key) in Info.plist file", userInfo: nil).raise()
-        }
-        return value!
-    }
-}
-
-extension NSDate {
-    // TODO: use DKHelper
-    func fullDisplayTime() -> String! {
-        return "\(self.day()) \(self.monthName()) - \(self.hour()):\(self.minute())"
-    }
-
-    func hourDisplayTime() -> String! {
-        return "\(self.hour()):\(self.minute())"
-    }
-
-    func displayableString() -> String {
-        return NSDateFormatter.localizedStringFromDate(self, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
-    }
-}
-
 extension String {
 
-    // TODO: use DKHelper
-    static func randomNumericString(length: Int) -> NSString {
-
-        let letters : NSString = "0123456789"
-
-        var randomString : NSMutableString = NSMutableString(capacity: length)
-        for (var i=0; i < length; i++){
-            var length = UInt32 (letters.length)
-            var rand = arc4random_uniform(length)
-            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+    static func stringFromDate(date: NSDate?, style: NSDateFormatterStyle) -> String? {
+        if (date == nil) {
+            return nil
         }
-        return randomString
+        var df = NSDateFormatter()
+        df.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        df.dateStyle = style
+        return df.stringFromDate(date!)
     }
 
-    static func randomString(length: Int) -> NSString {
-
-        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-
-        var randomString : NSMutableString = NSMutableString(capacity: length)
-        for (var i=0; i < length; i++){
-            var length = UInt32 (letters.length)
-            var rand = arc4random_uniform(length)
-            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
-        }
-        return randomString
-    }
-
-    func isAlphaNumeric() -> Bool {
-        let regex = "[A-Z0-9a-z_]*"
-        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)!
-        return predicate.evaluateWithObject(self)
-    }
-    
     func isUserName() -> Bool {
         let regex = "[äÄüÜöÖßA-Z0-9a-z_\\s-]+"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)!
         return predicate.evaluateWithObject(self)
-    }
-    
-    //From HockeySDK (see BITHockeyHelper.m -> bit_validateEmail(NSString))
-    func isEmail() -> Bool {
-        let emailRegex =    "(?:[a-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[a-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+)*|\"" +
-                            "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\" +
-                            "x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0" +
-                            "-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){" +
-                            "3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\" +
-                            "x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
-        
-        var predicate = NSPredicate(format: "SELF MATCHES[c] %@", emailRegex)!
-        return predicate.evaluateWithObject(self)
-    }
-    
-    func isPhoneNumber() -> Bool {
-        let regex = "^00[0-9]{9,13}$"
-        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)!
-        return predicate.evaluateWithObject(self)
-    }
-    
-    //"  this is a text  " -> "this is a text", by removing the leading and ending whitespaces
-    func trimWhitespaces() -> String {
-        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-    }
-    
-    // Remove all white spaces and all new lines \n
-    func removeAllNewlinesAndIllegalChars() -> String {
-        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-    }
-}
-
-extension UIImage {
-
-    class func scaleImage(image: UIImage!, size: CGSize) -> UIImage! {
-          // TODO: use DKHelper
-        UIGraphicsBeginImageContext(size)
-        image.drawInRect(CGRectMake(0,0,size.width,size.height))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext() as UIImage
-        UIGraphicsEndImageContext()
-        return newImage
-    }
-
-    func resizedImageToScreenSize() -> UIImage! {
-          // TODO: use DKHelper
-        var screenSize = UIScreen.mainScreen().bounds as CGRect
-        var size = CGSizeMake(0, screenSize.size.height) as CGSize
-        var ratio = 0.0 as CGFloat
-        if (self.size.height < screenSize.size.height) {
-            ratio = screenSize.size.height / self.size.height;
-            size.width = self.size.width * ratio;
-        } else {
-            ratio = self.size.height / screenSize.size.height;
-            size.width = self.size.width / ratio;
-        }
-        return UIImage.scaleImage(self, size: size);
     }
 }
 
