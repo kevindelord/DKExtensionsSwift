@@ -57,6 +57,18 @@ func + <K,V>(left: Dictionary<K,V>, right: Dictionary<K,V>) -> Dictionary<K,V> {
 
 // MARK: - Extensions
 
+extension NSDate {
+    func isOlderOrEqualThan(year: Int) -> Bool {
+        //
+        // Check if the selected date is older or equal to the given parameter.
+        var bdate = self.midnightDate()
+        var dateComponent = NSDateComponents()
+        dateComponent.year = -(year)
+        let veryOldDate = NSCalendar.currentCalendar().dateByAddingComponents(dateComponent, toDate: NSDate.currentDayDate(), options: NSCalendarOptions.allZeros)
+        return (bdate.compare(veryOldDate!) != NSComparisonResult.OrderedDescending)
+    }
+}
+
 extension NSError {
     func log() {
         println("Error: \(self) \(self.userInfo!)")
