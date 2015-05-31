@@ -119,6 +119,10 @@ extension UIAlertView {
     class func showErrorMessage(message: String) {
         UIAlertView(title: "Error", message: message, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "ok").show()
     }
+
+    class func showInfoMessage(title: String, message: String) {
+        UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "ok").show()
+    }
 }
 
 extension String {
