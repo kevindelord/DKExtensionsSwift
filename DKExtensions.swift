@@ -230,3 +230,21 @@ extension UIDevice {
         return (networkInfo.subscriberCellularProvider?.mobileCountryCode? != nil)
     }
 }
+
+extension NSNumber {
+    //
+    // will return a String with the currency for the given Location
+    // can be used to display a Pricetag for an in App Product.
+    // take SKProduct.price for self
+    // and SKProduct.priceLocale for locae.
+    func stringWithCurrencyForNumber(locale:NSLocale) -> String? {
+        var formatter = NSNumberFormatter()
+        formatter.locale = locale
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        formatter.alwaysShowsDecimalSeparator = true
+        formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle
+
+        return formatter.stringFromNumber(self)
+    }
+}
