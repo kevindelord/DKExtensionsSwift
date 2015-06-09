@@ -35,6 +35,15 @@ class PopViewControllerSegue : UIStoryboardSegue {
     }
 }
 
+extension SKProduct {
+    func localisedPrice() -> String? {
+        var numberFormatter = NSNumberFormatter()
+        numberFormatter.formatterBehavior = NSNumberFormatterBehavior.BehaviorDefault
+        numberFormatter.numberStyle = .CurrencyStyle
+        numberFormatter.locale = self.priceLocale
+        return numberFormatter.stringFromNumber(self.price)
+    }
+}
 // MARK: - Additions
 
 func += <KeyType, ValueType> (inout left: Dictionary<KeyType, ValueType>, right: Dictionary<KeyType, ValueType>) {
