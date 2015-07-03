@@ -118,7 +118,7 @@ extension UIAlertView {
             msg = errorMessage
         } else if let errorMessage = error.localizedFailureReason {
             msg = errorMessage
-        } else if (count(error.localizedDescription.utf16) > 0) {
+        } else if (count(error.localizedDescription) > 0) {
             msg = error.localizedDescription
         }
         // show a popup
