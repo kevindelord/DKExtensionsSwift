@@ -118,7 +118,7 @@ extension UIAlertView {
             msg = errorMessage
         } else if let errorMessage = error.localizedFailureReason {
             msg = errorMessage
-        } else if (error.localizedDescription.utf16Count > 0) {
+        } else if (count(error.localizedDescription) > 0) {
             msg = error.localizedDescription
         }
         // show a popup
@@ -138,7 +138,7 @@ extension String {
 
     func isUserName() -> Bool {
         let regex = "[äÄüÜöÖßA-Z0-9a-z_\\s-]+"
-        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)!
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         return predicate.evaluateWithObject(self)
     }
 }
@@ -236,7 +236,7 @@ extension UIDevice {
     //
     func hasSimCard() -> Bool {
         var networkInfo = CTTelephonyNetworkInfo()
-        return (networkInfo.subscriberCellularProvider?.mobileCountryCode? != nil)
+        return (networkInfo.subscriberCellularProvider?.mobileCountryCode != nil)
     }
 }
 
