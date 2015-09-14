@@ -147,7 +147,7 @@ extension String {
 extension Array {
 
     mutating func removeObject<U: Equatable>(object: U) {
-        var index: Int?
+        var index: Int? = nil
         for (idx, objectToCompare) in enumerate(self) {
             if let to = objectToCompare as? U {
                 if object == to {
@@ -155,8 +155,9 @@ extension Array {
                 }
             }
         }
-        if index != nil {
-            self.removeAtIndex(index!)
+        if let i = index {
+            self.removeAtIndex(i)
+			self.removeObject(object)
         }
     }
 }
