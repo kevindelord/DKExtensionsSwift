@@ -212,9 +212,10 @@ extension NSLocale {
         return NSLocale.ISOCountryCodes().map({(code: AnyObject) -> String in
             //
             // this seems to crash on Simulator (some) (http://stackoverflow.com/questions/26613011/xcode-6-1-ios-8-1-nslocale-displaynameforkey-nslocaleidentifier-return-nil)
-            // it's just in Simulator and i have no idear for a good Workaround
+            // it's just in Simulator and i have no idea for a good Workaround
             //
-            return self.displayNameForKey(NSLocaleCountryCode, value: code)! as String
+            return (self.displayNameForKey(NSLocaleCountryCode, value: code) ?? "")
+
             }).sorted({
                 //
                 // We need to return a SortedArray, we use the Default function to Sort this array
