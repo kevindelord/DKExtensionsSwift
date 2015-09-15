@@ -146,19 +146,8 @@ extension String {
 
 extension Array {
 
-    func combine(separator: String) -> String{
-        var str : String = ""
-        for (idx, item) in enumerate(self) {
-            str += "\(item)"
-            if idx < self.count-1 {
-                str += separator
-            }
-        }
-        return str
-    }
-
     mutating func removeObject<U: Equatable>(object: U) {
-        var index: Int?
+        var index: Int? = nil
         for (idx, objectToCompare) in enumerate(self) {
             if let to = objectToCompare as? U {
                 if object == to {
@@ -166,8 +155,9 @@ extension Array {
                 }
             }
         }
-        if index != nil {
-            self.removeAtIndex(index!)
+        if let i = index {
+            self.removeAtIndex(i)
+			self.removeObject(object)
         }
     }
 }
