@@ -37,6 +37,11 @@ class PopViewControllerSegue : UIStoryboardSegue {
 }
 
 extension SKProduct {
+    @availability(*, deprecated=0.9, renamed="localizedPrice")
+    func localisedPrice() -> String? {
+        return self.localizedPrice()
+    }
+
     func localizedPrice() -> String? {
         var numberFormatter = NSNumberFormatter()
         numberFormatter.formatterBehavior = NSNumberFormatterBehavior.BehaviorDefault
