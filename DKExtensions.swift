@@ -165,6 +165,16 @@ extension Array {
 			self.removeObject(object)
         }
     }
+	
+	mutating func shuffle() {
+		if (self.count < 2) {
+			return
+		}
+		for i in 0..<(self.count - 1) {
+			let j = Int(arc4random_uniform(UInt32(self.count - i))) + i
+			swap(&self[i], &self[j])
+		}
+	}
 }
 
 extension UIImagePickerControllerSourceType {
