@@ -153,11 +153,9 @@ extension Array {
 
     mutating func removeObject<U: Equatable>(object: U) {
         var index: Int? = nil
-        for (idx, objectToCompare) in enumerate(self) {
-            if let to = objectToCompare as? U {
-                if object == to {
-                    index = idx
-                }
+        for (idx, objectToCompare) in self.enumerate() {
+            if let to = objectToCompare as? U where (object == to) {
+				index = idx
             }
         }
         if let i = index {
@@ -187,7 +185,7 @@ extension UILabel {
     // will not change the label' Size
     //
     func textFitsWidth() -> Bool {
-        var actualSize = self.frame.size
+        let actualSize = self.frame.size
         self.sizeToFit()
         if self.frame.size.width > actualSize.width {
             self.frame.size = actualSize
