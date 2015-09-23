@@ -153,7 +153,7 @@ extension Array where Element: Equatable {
 
 	mutating func removeObject(item: Element) {
 		if let index = self.indexOf(item) {
-			removeAtIndex(index)
+			self.removeAtIndex(index)
 		}
 	}
 }
