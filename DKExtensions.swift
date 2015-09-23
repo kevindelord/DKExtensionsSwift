@@ -149,20 +149,13 @@ extension String {
     }
 }
 
-extension Array {
+extension Array where Element: Equatable {
 
-    mutating func removeObject<U: Equatable>(object: U) {
-        var index: Int? = nil
-        for (idx, objectToCompare) in self.enumerate() {
-            if let to = objectToCompare as? U where (object == to) {
-				index = idx
-            }
-        }
-        if let i = index {
-            self.removeAtIndex(i)
-			self.removeObject(object)
-        }
-    }
+	mutating func removeObject(item: Element) {
+		if let index = self.indexOf(item) {
+			removeAtIndex(index)
+		}
+	}
 }
 
 extension UIImagePickerControllerSourceType {
