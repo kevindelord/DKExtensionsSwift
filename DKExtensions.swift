@@ -154,6 +154,16 @@ extension Array where Element: Equatable {
 	mutating func removeObject(item: Element) {
 		if let index = self.indexOf(item) {
 			self.removeAtIndex(index)
+        }
+    }
+	
+	mutating func shuffle() {
+		if (self.count < 2) {
+			return
+		}
+		for i in 0..<(self.count - 1) {
+			let j = Int(arc4random_uniform(UInt32(self.count - i))) + i
+			swap(&self[i], &self[j])
 		}
 	}
 }
