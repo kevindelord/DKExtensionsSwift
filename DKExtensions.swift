@@ -15,7 +15,7 @@ import StoreKit
 func DKLog(verbose: Bool, obj: AnyObject) {
     #if DEBUG
         if (verbose == true) {
-            println(obj)
+            print(obj)
         }
         #else
         // do nothing
@@ -26,24 +26,24 @@ func DKLog(verbose: Bool, obj: AnyObject) {
 
 class PopToRootViewControllerSegue : UIStoryboardSegue {
     override func perform() {
-        (self.sourceViewController as? UIViewController)?.navigationController?.popToRootViewControllerAnimated(true)
+        self.sourceViewController.navigationController?.popToRootViewControllerAnimated(true)
     }
 }
 
 class PopViewControllerSegue : UIStoryboardSegue {
     override func perform() {
-        (self.sourceViewController as? UIViewController)?.navigationController?.popViewControllerAnimated(true)
+        self.sourceViewController.navigationController?.popViewControllerAnimated(true)
     }
 }
 
 extension SKProduct {
-    @availability(*, deprecated=0.9, renamed="localizedPrice")
+    @available(*, deprecated=0.9, renamed="localizedPrice")
     func localisedPrice() -> String? {
         return self.localizedPrice()
     }
 
     func localizedPrice() -> String? {
-        var numberFormatter = NSNumberFormatter()
+        let numberFormatter = NSNumberFormatter()
         numberFormatter.formatterBehavior = NSNumberFormatterBehavior.BehaviorDefault
         numberFormatter.numberStyle = .CurrencyStyle
         numberFormatter.locale = self.priceLocale
@@ -76,22 +76,22 @@ extension NSDate {
     func isOlderOrEqualThan(year: Int) -> Bool {
         //
         // Check if the selected date is older or equal to the given parameter.
-        var bdate = self.midnightDate()
-        var dateComponent = NSDateComponents()
+        let bdate = self.midnightDate()
+        let dateComponent = NSDateComponents()
         dateComponent.year = -(year)
-        let veryOldDate = NSCalendar.currentCalendar().dateByAddingComponents(dateComponent, toDate: NSDate.currentDayDate(), options: NSCalendarOptions.allZeros)
+        let veryOldDate = NSCalendar.currentCalendar().dateByAddingComponents(dateComponent, toDate: NSDate.currentDayDate(), options: NSCalendarOptions())
         return (bdate.compare(veryOldDate!) != NSComparisonResult.OrderedDescending)
     }
 }
 
 extension NSError {
     func log() {
-        println("Error: \(self) \(self.userInfo!)")
+        print("Error: \(self) \(self.userInfo)")
     }
 }
 
 extension UIView {
-    func roundRect(#radius: CGFloat) {
+    func roundRect(radius radius: CGFloat) {
         self.layer.cornerRadius = radius
         self.layer.masksToBounds = true
     }
@@ -102,8 +102,8 @@ extension UIView {
     */
     class func gradientLayer(rect: CGRect, topColor: UIColor, bottomColor: UIColor) -> UIView {
         
-        var gradientLayerView: UIView = UIView(frame: rect)
-        var gradient: CAGradientLayer = CAGradientLayer()
+        let gradientLayerView: UIView = UIView(frame: rect)
+        let gradient: CAGradientLayer = CAGradientLayer()
         gradient.frame = gradientLayerView.bounds
         gradient.colors = [topColor.CGColor, bottomColor.CGColor]
         gradient.startPoint = CGPointMake(0, -1.0)
@@ -120,11 +120,11 @@ extension UIAlertView {
         error.log()
         // find a valid message to display
         var msg = ""
-        if let errorMessage : String = error.userInfo?["error"] as? String {
+        if let errorMessage : String = error.userInfo["error"] as? String {
             msg = errorMessage
         } else if let errorMessage = error.localizedFailureReason {
             msg = errorMessage
-        } else if (count(error.localizedDescription) > 0) {
+        } else if (error.localizedDescription.characters.count > 0) {
             msg = error.localizedDescription
         }
         // show a popup
@@ -149,20 +149,11 @@ extension String {
     }
 }
 
-extension Array {
+extension Array where Element: Equatable {
 
-    mutating func removeObject<U: Equatable>(object: U) {
-        var index: Int? = nil
-        for (idx, objectToCompare) in enumerate(self) {
-            if let to = objectToCompare as? U {
-                if object == to {
-                    index = idx
-                }
-            }
-        }
-        if let i = index {
-            self.removeAtIndex(i)
-			self.removeObject(object)
+	mutating func removeObject(item: Element) {
+		if let index = self.indexOf(item) {
+			self.removeAtIndex(index)
         }
     }
 	
@@ -197,7 +188,7 @@ extension UILabel {
     // will not change the label' Size
     //
     func textFitsWidth() -> Bool {
-        var actualSize = self.frame.size
+        let actualSize = self.frame.size
         self.sizeToFit()
         if self.frame.size.width > actualSize.width {
             self.frame.size = actualSize
@@ -220,8 +211,7 @@ extension UIDevice {
     // - There is no SIM card in the device. [...]
     //
     func hasSimCard() -> Bool {
-        var networkInfo = CTTelephonyNetworkInfo()
-        return (networkInfo.subscriberCellularProvider?.mobileCountryCode != nil)
+        return (CTTelephonyNetworkInfo().subscriberCellularProvider?.mobileCountryCode != nil)
     }
 }
 
@@ -232,7 +222,7 @@ extension NSNumber {
     // take SKProduct.price for self
     // and SKProduct.priceLocale for locae.
     func stringWithCurrencyForNumber(locale:NSLocale) -> String? {
-        var formatter = NSNumberFormatter()
+        let formatter = NSNumberFormatter()
         formatter.locale = locale
         formatter.maximumFractionDigits = 2
         formatter.minimumFractionDigits = 2
