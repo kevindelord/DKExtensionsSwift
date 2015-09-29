@@ -16,7 +16,11 @@ let ShouldShowDetailedLogs	: Bool	= true
 
 func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
 	#if DEBUG
-		if (ShouldShowDetailedLogs == true) {
+        struct DKLog {
+			static var ShouldShowDetailedLogs	: Bool	= true
+        }
+
+        if (DKLog.ShouldShowDetailedLogs == true) {
 			if (ShouldShowDetailedLogs),
 				let className = file.lastPathComponent.componentsSeparatedByString(".").first {
 					println(">>> \(line) \(className).\(function) --> \(obj)")
