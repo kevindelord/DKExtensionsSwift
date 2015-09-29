@@ -12,14 +12,14 @@ import StoreKit
 
 // MARK: - Debug
 
+struct DKLogLevel {
+    static var ShouldShowDetailedLogs   : Bool  = false
+}
+
 func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
 	#if DEBUG
-        struct DKLog {
-			static var ShouldShowDetailedLogs	: Bool	= false
-        }
-
-        if (DKLog.ShouldShowDetailedLogs == true) {
-			if (ShouldShowDetailedLogs),
+        if (verbose == true) {
+			if (DKLogLevel.ShouldShowDetailedLogs == true),
 				let className = file.lastPathComponent.componentsSeparatedByString(".").first {
 					println(">>> \(line) \(className).\(function) --> \(obj)")
 			} else {
