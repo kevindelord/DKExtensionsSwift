@@ -12,14 +12,21 @@ import StoreKit
 
 // MARK: - Debug
 
-func DKLog(verbose: Bool, obj: AnyObject) {
-    #if DEBUG
-        if (verbose == true) {
-            print(obj)
+let ShouldShowDetailedLogs	: Bool	= true
+
+func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+	#if DEBUG
+		if (ShouldShowDetailedLogs == true) {
+			if (ShouldShowDetailedLogs),
+				let className = file.lastPathComponent.componentsSeparatedByString(".").first {
+					println(">>> \(line) \(className).\(function) --> \(obj)")
+			} else {
+				println(obj)
+			}
         }
         #else
-        // do nothing
-    #endif
+		// do nothing
+	#endif
 }
 
 // MARK: - Classes
