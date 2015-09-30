@@ -156,15 +156,33 @@ extension Array where Element: Equatable {
 			self.removeAtIndex(index)
         }
     }
-	
-	mutating func shuffle() {
-		if (self.count < 2) {
-			return
+}
+
+extension Array {
+
+	var shuffle:[Element] {
+		var elements = self
+		for index in 0..<elements.count {
+			let newIndex = Int(arc4random_uniform(UInt32(elements.count-index))) + index
+			if (index != newIndex) { // Check if you are not trying to swap an element with itself
+				swap(&elements[index], &elements[newIndex])
+			}
 		}
-		for i in 0..<(self.count - 1) {
-			let j = Int(arc4random_uniform(UInt32(self.count - i))) + i
-			swap(&self[i], &self[j])
+		return elements
+	}
+
+	func groupOf(n:Int)-> [[Element]] {
+		var result = [[Element]]()
+		if (n > 0) {
+			for i in 0...(count/n)-1 {
+				var tempArray = [Element]()
+				for index in 0...n-1 {
+					tempArray.append(self[index+(i*n)])
+				}
+				result.append(tempArray)
+			}
 		}
+		return result
 	}
 }
 
