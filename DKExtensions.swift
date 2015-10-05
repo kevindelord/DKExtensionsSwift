@@ -101,7 +101,7 @@ extension UIView {
     * The start point has to be -1.0 instead of 0.0 in Obj-C.
     */
     class func gradientLayer(rect: CGRect, topColor: UIColor, bottomColor: UIColor) -> UIView {
-        
+
         let gradientLayerView: UIView = UIView(frame: rect)
         let gradient: CAGradientLayer = CAGradientLayer()
         gradient.frame = gradientLayerView.bounds
@@ -156,7 +156,7 @@ extension Array where Element: Equatable {
 			self.removeAtIndex(index)
         }
     }
-	
+
 	mutating func shuffle() {
 		if (self.count < 2) {
 			return
