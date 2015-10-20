@@ -188,7 +188,7 @@ extension Array {
 
 	/*
 	* Bounds-checked ("safe") index lookup for Arrays.
-	* Example usage: 
+	* Example usage:
 	* let foo = [0,1,2][safe: 1]	|	foo = (Int?) 1
 	* let bar = [0,1,2][safe: 10]	|	bar = (Int?) nil
 	*/
