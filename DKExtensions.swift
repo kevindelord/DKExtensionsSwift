@@ -175,6 +175,16 @@ extension Array {
 			swap(&self[i], &self[j])
 		}
 	}
+
+	/*
+	* Bounds-checked ("safe") index lookup for Arrays.
+	* Example usage: 
+	* let foo = [0,1,2][safe: 1]	|	foo = (Int?) 1
+	* let bar = [0,1,2][safe: 10]	|	bar = (Int?) nil
+	*/
+	subscript (safe index: Int) -> Element? {
+		return ((self.indices ~= index) ? self[index] : nil)
+	}
 }
 
 extension UIImagePickerControllerSourceType {
