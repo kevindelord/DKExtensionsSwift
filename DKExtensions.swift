@@ -261,3 +261,15 @@ extension NSNumber {
         return formatter.stringFromNumber(self)
     }
 }
+
+extension Int {
+
+	//
+	// will return a random number between the given range:
+	// e.g : let randomNumber = randoInt.randomNumber(4...8)
+	static func randomNumber(range: Range<Int>) -> Int {
+		let min = range.startIndex
+		let max = range.endIndex
+		return Int(arc4random_uniform(UInt32(max - min))) + min
+	}
+}
