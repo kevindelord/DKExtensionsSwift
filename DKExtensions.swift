@@ -12,14 +12,23 @@ import StoreKit
 
 // MARK: - Debug
 
-func DKLog(verbose: Bool, obj: AnyObject) {
-    #if DEBUG
+struct DKLogLevel {
+    static var ShouldShowDetailedLogs   : Bool  = false
+}
+
+func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+	#if DEBUG
         if (verbose == true) {
-            print(obj)
+			if (DKLogLevel.ShouldShowDetailedLogs == true),
+				let className = NSURL(string: file)?.lastPathComponent?.componentsSeparatedByString(".").first {
+					print(">>> \(line) \(className).\(function) --> \(obj)")
+			} else {
+				print(obj)
+			}
         }
         #else
-        // do nothing
-    #endif
+		// do nothing
+	#endif
 }
 
 // MARK: - Classes
