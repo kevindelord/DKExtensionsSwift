@@ -20,10 +20,10 @@ func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = __FILE__, functi
 	#if DEBUG
         if (verbose == true) {
 			if (DKLogLevel.ShouldShowDetailedLogs == true),
-				let className = file.lastPathComponent.componentsSeparatedByString(".").first {
-					println(">>> \(line) \(className).\(function) --> \(obj)")
+				let className = NSURL(string: file)?.lastPathComponent?.componentsSeparatedByString(".").first {
+					print(">>> \(line) \(className).\(function) --> \(obj)")
 			} else {
-				println(obj)
+				print(obj)
 			}
         }
         #else
