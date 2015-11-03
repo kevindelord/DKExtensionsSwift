@@ -12,16 +12,24 @@ import StoreKit
 
 // MARK: - Debug
 
-struct DKLogLevel {
+struct DKLogSettings {
     static var ShouldShowDetailedLogs   : Bool  = false
+    static var DetailedLogFormat = ">>> :line :className.:function --> :obj"
 }
 
 func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
 	#if DEBUG
         if (verbose == true) {
-			if (DKLogLevel.ShouldShowDetailedLogs == true),
+			if (DKLogSettings.ShouldShowDetailedLogs == true),
 				let className = NSURL(string: file)?.lastPathComponent?.componentsSeparatedByString(".").first {
-					print(">>> \(line) \(className).\(function) --> \(obj)")
+
+					var logStatement = DKLogSettings.DetailedLogFormat.stringByReplacingOccurrencesOfString(":line", withString: "\(line)")
+					logStatement = logStatement.stringByReplacingOccurrencesOfString(":className", withString: className)
+					logStatement = logStatement.stringByReplacingOccurrencesOfString(":function", withString: function)
+					logStatement = logStatement.stringByReplacingOccurrencesOfString(":obj", withString: "\(obj)")
+					logStatement = logStatement.stringByReplacingOccurrencesOfString(":date", withString: "\(NSDate())")
+
+					print(logStatement)
 			} else {
 				print(obj)
 			}
