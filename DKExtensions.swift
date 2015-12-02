@@ -121,20 +121,23 @@ extension UIView {
 }
 
 extension UIAlertView {
-    class func showErrorPopup(error: NSError!) {
+
+    class func showErrorPopup(error: NSError?) {
         // log error
-        error.log()
+        error?.log()
         // find a valid message to display
-        var msg = ""
-        if let errorMessage : String = error.userInfo["error"] as? String {
+        var msg : String? = nil
+        if let errorMessage : String = error?.userInfo["error"] as? String {
             msg = errorMessage
-        } else if let errorMessage = error.localizedFailureReason {
+        } else if let errorMessage = error?.localizedFailureReason {
             msg = errorMessage
-        } else if (error.localizedDescription.characters.count > 0) {
-            msg = error.localizedDescription
+        } else if let errorMessage = error?.localizedDescription where (errorMessage.characters.count > 0) {
+            msg = errorMessage
         }
         // show a popup
-        self.showErrorMessage(msg)
+		if let _msg = msg {
+			self.showErrorMessage(_msg)
+		}
     }
 
     class func showErrorMessage(message: String) {
