@@ -151,6 +151,23 @@ extension UIAlertView {
 
 extension String {
 
+	/**
+	* Return a dictionary containing the key/values of the received
+	*/
+	private var urlArguments : [String : String] {
+		var params = [String : String]()
+		for param in self.componentsSeparatedByString("&") {
+			let elts = param.componentsSeparatedByString("=")
+			if (elts.count == 2),
+				let
+				key = elts.first,
+				value = elts.last {
+					params[key] = value
+			}
+		}
+		return params
+	}
+
     func isUserName() -> Bool {
         let regex = "[äÄüÜöÖßA-Z0-9a-z_\\s-]+"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
@@ -206,6 +223,7 @@ extension Array {
 }
 
 extension UIImagePickerControllerSourceType {
+
     func nameType() -> String {
         switch self {
         case .PhotoLibrary:
