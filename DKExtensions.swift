@@ -76,9 +76,9 @@ func += <KeyType, ValueType> (inout left: Dictionary<KeyType, ValueType>, right:
     }
 }
 
-func + <K,V>(left: Dictionary<K,V>, right: Dictionary<K,V>) -> Dictionary<K,V> {
+func + <K, V>(left: Dictionary<K, V>, right: Dictionary<K, V>) -> Dictionary<K, V> {
 
-    var map = Dictionary<K,V>()
+    var map = Dictionary<K, V>()
     for (k, v) in left {
         map[k] = v
     }
@@ -180,13 +180,13 @@ extension Array {
 		return elements
 	}
 
-	func groupOf(n:Int)-> [[Element]] {
+	func groupOf(num:Int)-> [[Element]] {
 		var result = [[Element]]()
-		if (n > 0) {
-			for i in 0...(count/n)-1 {
+		if (num > 0) {
+			for i in 0...(count/num)-1 {
 				var tempArray = [Element]()
-				for index in 0...n-1 {
-					tempArray.append(self[index+(i*n)])
+				for index in 0...num-1 {
+					tempArray.append(self[index+(i*num)])
 				}
 				result.append(tempArray)
 			}
