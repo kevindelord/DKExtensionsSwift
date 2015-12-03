@@ -154,7 +154,7 @@ extension String {
 	/**
 	* Return a dictionary containing the key/values of the received
 	*/
-	private var urlArguments : [String : String] {
+	var urlArguments : [String : String] {
 		var params = [String : String]()
 		for param in self.componentsSeparatedByString("&") {
 			let elts = param.componentsSeparatedByString("=")
