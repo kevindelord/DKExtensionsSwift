@@ -101,19 +101,26 @@ extension UIView {
         self.layer.cornerRadius = radius
         self.layer.masksToBounds = true
     }
-    /**
-    * Creates gradient view of given size with given colors
-    * This function already exist in the DKHelper, but does not work in Swift.
-    * The start point has to be -1.0 instead of 0.0 in Obj-C.
-    */
+
+	/**
+	Creates gradient view of given size with given colors
+	This function already exist in the DKHelper, but does not work in Swift.
+	The start point has to be -1.0 instead of 0.0 in Obj-C.
+
+	- parameter rect:        The rect for the new gradient view.
+	- parameter topColor:    The top color.
+	- parameter bottomColor: the bottom color.
+
+	- returns: <#return value description#>
+	*/
     class func gradientLayer(rect: CGRect, topColor: UIColor, bottomColor: UIColor) -> UIView {
 
         let gradientLayerView: UIView = UIView(frame: rect)
         let gradient: CAGradientLayer = CAGradientLayer()
         gradient.frame = gradientLayerView.bounds
         gradient.colors = [topColor.CGColor, bottomColor.CGColor]
-        gradient.startPoint = CGPointMake(0, -1.0)
-        gradient.endPoint = CGPointMake(0, 1.0)
+		gradient.startPoint = CGPoint(x: 0, y: -1.0)
+		gradient.endPoint = CGPoint(x: 0, y: 1.0)
         gradientLayerView.layer.insertSublayer(gradient, atIndex: 0)
         return gradientLayerView
     }
@@ -197,7 +204,7 @@ extension Array {
 		return elements
 	}
 
-	func groupOf(num:Int)-> [[Element]] {
+	func groupOf(num:Int) -> [[Element]] {
 		var result = [[Element]]()
 		if (num > 0) {
 			for i in 0...(count/num)-1 {
