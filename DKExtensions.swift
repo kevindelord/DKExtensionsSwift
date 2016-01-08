@@ -111,7 +111,7 @@ extension UIView {
 	- parameter topColor:    The top color.
 	- parameter bottomColor: the bottom color.
 
-	- returns: <#return value description#>
+	- returns: gradient view
 	*/
     class func gradientLayer(rect: CGRect, topColor: UIColor, bottomColor: UIColor) -> UIView {
 
