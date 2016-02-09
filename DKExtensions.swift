@@ -14,7 +14,13 @@ import StoreKit
 
 struct DKLogSettings {
     static var ShouldShowDetailedLogs   : Bool  = false
-    static var DetailedLogFormat = ">>> :line :className.:function --> :obj"
+    static var DetailedLogFormat		= ">>> :line :className.:function --> :obj"
+    static var DetailedLogDateFormat	= "yyyy-MM-dd HH:mm:ss.SSS"
+	static private var dateFormatter	: NSDateFormatter {
+		let formatter = NSDateFormatter()
+		formatter.dateFormat = DKLogSettings.DetailedLogDateFormat
+		return formatter
+	}
 }
 
 func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
@@ -27,15 +33,17 @@ func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = __FILE__, functi
 					logStatement = logStatement.stringByReplacingOccurrencesOfString(":className", withString: className)
 					logStatement = logStatement.stringByReplacingOccurrencesOfString(":function", withString: function)
 					logStatement = logStatement.stringByReplacingOccurrencesOfString(":obj", withString: "\(obj)")
-					logStatement = logStatement.stringByReplacingOccurrencesOfString(":date", withString: "\(NSDate())")
+
+					if (logStatement.containsString(":date")) {
+						let replacement = DKLogSettings.dateFormatter.stringFromDate(NSDate())
+						logStatement = logStatement.stringByReplacingOccurrencesOfString(":date", withString: "\(replacement)")
+					}
 
 					print(logStatement)
 			} else {
 				print(obj)
 			}
         }
-        #else
-		// do nothing
 	#endif
 }
 
