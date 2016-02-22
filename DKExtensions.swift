@@ -303,6 +303,18 @@ extension NSNumber {
     }
 }
 
+extension UIApplication {
+
+	/// Boolean value indicating whether the current application is running on a simulator or not.
+	static var isRunningOnSimulator : Bool {
+		#if (arch(i386) || arch(x86_64)) && os(iOS)
+			return true
+		#else
+			return false
+		#endif
+	}
+}
+
 extension Int {
 
 	//
