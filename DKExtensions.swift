@@ -17,7 +17,7 @@ struct DKLogSettings {
     static var DetailedLogFormat = ">>> :line :className.:function --> :obj"
 }
 
-func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = #file, function: String = #function, line: Int = #line) {
 	#if DEBUG
         if (verbose == true) {
 			if (DKLogSettings.ShouldShowDetailedLogs == true),
