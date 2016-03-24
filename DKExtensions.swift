@@ -14,7 +14,13 @@ import StoreKit
 
 struct DKLogSettings {
     static var ShouldShowDetailedLogs   : Bool  = false
-    static var DetailedLogFormat = ">>> :line :className.:function --> :obj"
+    static var DetailedLogFormat		= ">>> :line :className.:function --> :obj"
+    static var DetailedLogDateFormat	= "yyyy-MM-dd HH:mm:ss.SSS"
+	static private var dateFormatter	: NSDateFormatter {
+		let formatter = NSDateFormatter()
+		formatter.dateFormat = DKLogSettings.DetailedLogDateFormat
+		return formatter
+	}
 }
 
 func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = #file, function: String = #function, line: Int = #line) {
@@ -27,15 +33,17 @@ func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = #file, function:
 					logStatement = logStatement.stringByReplacingOccurrencesOfString(":className", withString: className)
 					logStatement = logStatement.stringByReplacingOccurrencesOfString(":function", withString: function)
 					logStatement = logStatement.stringByReplacingOccurrencesOfString(":obj", withString: "\(obj)")
-					logStatement = logStatement.stringByReplacingOccurrencesOfString(":date", withString: "\(NSDate())")
+
+					if (logStatement.containsString(":date")) {
+						let replacement = DKLogSettings.dateFormatter.stringFromDate(NSDate())
+						logStatement = logStatement.stringByReplacingOccurrencesOfString(":date", withString: "\(replacement)")
+					}
 
 					print(logStatement)
 			} else {
 				print(obj)
 			}
         }
-        #else
-		// do nothing
 	#endif
 }
 
@@ -90,6 +98,21 @@ func + <K, V>(left: Dictionary<K, V>, right: Dictionary<K, V>) -> Dictionary<K, 
 
 // MARK: - Extensions
 
+extension RawRepresentable where RawValue == Int {
+	static var allCases: [Self] {
+		// Create array to store all found cases
+		var cases = [Self]()
+		// Use 0 as start index
+		var index = 0
+		// Try to create a case for every following integer index until no case is created. If no one is created,
+		while let _case = self.init(rawValue: index) {
+			cases.append(_case)
+			index += 1
+		}
+		return cases
+	}
+}
+
 extension NSError {
     func log() {
         print("Error: \(self) \(self.userInfo)")
@@ -111,7 +134,7 @@ extension UIView {
 	- parameter topColor:    The top color.
 	- parameter bottomColor: the bottom color.
 
-	- returns: <#return value description#>
+	- returns: gradient view
 	*/
     class func gradientLayer(rect: CGRect, topColor: UIColor, bottomColor: UIColor) -> UIView {
 
@@ -293,6 +316,18 @@ extension NSNumber {
 
         return formatter.stringFromNumber(self)
     }
+}
+
+extension UIApplication {
+
+	/// Boolean value indicating whether the current application is running on a simulator or not.
+	static var isRunningOnSimulator : Bool {
+		#if (arch(i386) || arch(x86_64)) && os(iOS)
+			return true
+		#else
+			return false
+		#endif
+	}
 }
 
 extension Int {
