@@ -179,11 +179,7 @@ extension UIAlertView {
 
 	@available(iOS, renamed="UIAlertController.showInfoMessage", message="use UIAlertController instead.")
 	class func showInfoMessage(title: String, message: String) {
-		if (NSClassFromString("UIAlertController") != nil) {
-			UIAlertController.showInfoMessage(title, message: message)
-		} else {
-			UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "ok").show()
-		}
+		UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK").show()
 	}
 }
 
@@ -213,7 +209,7 @@ extension UIAlertController {
 
 	class func showInfoMessage(title: String, message: String, presentingViewController: UIViewController? = UIApplication.sharedApplication().windows.first?.rootViewController) {
 		let ac = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-		ac.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+		ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
 		presentingViewController?.presentViewController(ac, animated: true, completion: nil)
 	}
 }
