@@ -150,33 +150,68 @@ extension UIView {
 
 }
 
+@available(iOS, obsoleted=8.0, message="use UIAlertController instead.")
 extension UIAlertView {
 
-    class func showErrorPopup(error: NSError?) {
-        // log error
-        error?.log()
-        // find a valid message to display
-        var msg : String? = nil
-        if let errorMessage : String = error?.userInfo["error"] as? String {
-            msg = errorMessage
-        } else if let errorMessage = error?.localizedFailureReason {
-            msg = errorMessage
-        } else if let errorMessage = error?.localizedDescription where (errorMessage.characters.count > 0) {
-            msg = errorMessage
-        }
-        // show a popup
+	@available(iOS, renamed="UIAlertController.showErrorPopup", message="use UIAlertController instead.")
+	class func showErrorPopup(error: NSError?) {
+		// log error
+		error?.log()
+		// find a valid message to display
+		var msg : String? = nil
+		if let errorMessage : String = error?.userInfo["error"] as? String {
+			msg = errorMessage
+		} else if let errorMessage = error?.localizedFailureReason {
+			msg = errorMessage
+		} else if let errorMessage = error?.localizedDescription where (errorMessage.characters.count > 0) {
+			msg = errorMessage
+		}
+		// show a popup
 		if let _msg = msg {
 			self.showErrorMessage(_msg)
 		}
-    }
+	}
 
-    class func showErrorMessage(message: String) {
-        UIAlertView(title: "Error", message: message, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "ok").show()
-    }
+	@available(iOS, renamed="UIAlertController.showErrorMessage", message="use UIAlertController instead.")
+	class func showErrorMessage(message: String) {
+		self.showInfoMessage("Error", message: message)
+	}
 
-    class func showInfoMessage(title: String, message: String) {
-        UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "ok").show()
-    }
+	@available(iOS, renamed="UIAlertController.showInfoMessage", message="use UIAlertController instead.")
+	class func showInfoMessage(title: String, message: String) {
+		UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK").show()
+	}
+}
+
+@available(iOS 8.0, *)
+extension UIAlertController {
+	class func showErrorPopup(error: NSError?, presentingViewController: UIViewController? = UIApplication.sharedApplication().windows.first?.rootViewController) {
+		// log error
+		error?.log()
+		// find a valid message to display
+		var msg : String? = nil
+		if let errorMessage : String = error?.userInfo["error"] as? String {
+			msg = errorMessage
+		} else if let errorMessage = error?.localizedFailureReason {
+			msg = errorMessage
+		} else if let errorMessage = error?.localizedDescription where (errorMessage.characters.isEmpty == false) {
+			msg = errorMessage
+		}
+		// show a popup
+		if let _msg = msg {
+			self.showErrorMessage(_msg, presentingViewController: presentingViewController)
+		}
+	}
+
+	class func showErrorMessage(message: String, presentingViewController: UIViewController? = UIApplication.sharedApplication().windows.first?.rootViewController) {
+		self.showInfoMessage("Error", message: message, presentingViewController: presentingViewController)
+	}
+
+	class func showInfoMessage(title: String, message: String, presentingViewController: UIViewController? = UIApplication.sharedApplication().windows.first?.rootViewController) {
+		let ac = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+		ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+		presentingViewController?.presentViewController(ac, animated: true, completion: nil)
+	}
 }
 
 extension String {
