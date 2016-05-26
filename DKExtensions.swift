@@ -317,6 +317,19 @@ extension UILabel {
         self.frame.size = actualSize
         return true
     }
+
+	/**
+	Transforms the given text by replacing all characters with "●"s.
+	*/
+	func setSecureText(secureText: String?) {
+		if let _secureText = secureText {
+			var secureString = ""
+			for _ in 0..<_secureText.characters.count {
+				secureString += "●"
+			}
+			self.text = secureString
+		}
+	}
 }
 
 extension UIDevice {
