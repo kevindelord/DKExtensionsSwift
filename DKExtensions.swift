@@ -320,6 +320,8 @@ extension UILabel {
 
 	/**
 	Transforms the given text by replacing all characters with "●"s.
+
+	- parameter secureText: Text to secure and to set to the current label
 	*/
 	func setSecureText(secureText: String?) {
 		if let _secureText = secureText {
