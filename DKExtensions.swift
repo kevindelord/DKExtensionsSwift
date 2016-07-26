@@ -240,6 +240,16 @@ extension String {
     }
 }
 
+extension Dictionary {
+
+	mutating func removeValuesOfType<T>(type: T.Type) {
+		let keysToRemove = Array(self.keys).filter { self[$0] is T }
+		for key in keysToRemove {
+			self.removeValueForKey(key)
+		}
+	}
+}
+
 extension Array where Element: Equatable {
 
 	mutating func removeObject(item: Element) {
