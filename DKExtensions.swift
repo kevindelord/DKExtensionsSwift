@@ -255,13 +255,13 @@ extension Array where Element: Equatable {
 	mutating func removeObject(item: Element) {
 		if let index = self.indexOf(item) {
 			self.removeAtIndex(index)
-        }
-    }
+		}
+	}
 }
 
 extension Array {
 
-	var shuffle:[Element] {
+	var shuffled: [Element] {
 		var elements = self
 		for index in 0..<elements.count {
 			let newIndex = Int(arc4random_uniform(UInt32(elements.count-index))) + index
@@ -272,13 +272,17 @@ extension Array {
 		return elements
 	}
 
+	mutating func shuffle() {
+		self = self.shuffled
+	}
+
 	func groupOf(num:Int) -> [[Element]] {
 		var result = [[Element]]()
 		if (num > 0) {
-			for i in 0...(count/num)-1 {
+			for i in 0...((count / num) - 1) {
 				var tempArray = [Element]()
-				for index in 0...num-1 {
-					tempArray.append(self[index+(i*num)])
+				for index in 0...(num - 1) {
+					tempArray.append(self[index + ( i * num)])
 				}
 				result.append(tempArray)
 			}
@@ -312,32 +316,33 @@ extension UIImagePickerControllerSourceType {
 }
 
 extension UILabel {
-    //
-    // calculating, if size to fit would expand or shrink the label
-    // returns true if the label Size is smaller then before
-    // will not change the label' Size
-    //
-    func textFitsWidth() -> Bool {
-        let actualSize = self.frame.size
-        self.sizeToFit()
-        if self.frame.size.width > actualSize.width {
-            self.frame.size = actualSize
-            return false
-        }
-        self.frame.size = actualSize
-        return true
-    }
+	//
+	// calculating, if size to fit would expand or shrink the label
+	// returns true if the label Size is smaller then before
+	// will not change the label' Size
+	//
+	func textFitsWidth() -> Bool {
+		let actualSize = self.frame.size
+		self.sizeToFit()
+		if self.frame.size.width > actualSize.width {
+			self.frame.size = actualSize
+			return false
+		}
+		self.frame.size = actualSize
+		return true
+	}
 
 	/**
-	Transforms the given text by replacing all characters with "●"s.
+	Transforms the given text by replacing all characters with the passed replacement ("●" by default).
 
 	- parameter secureText: Text to secure and to set to the current label
+	- parameter replacementText: String to set as secure character (default is "●")
 	*/
-	func setSecureText(secureText: String?) {
+	func setSecureText(secureText: String?, replacementText: String = "●") {
 		if let _secureText = secureText {
 			var secureString = ""
 			for _ in 0..<_secureText.characters.count {
-				secureString += "●"
+				secureString += replacementText
 			}
 			self.text = secureString
 		}
