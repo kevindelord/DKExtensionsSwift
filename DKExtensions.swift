@@ -13,6 +13,7 @@ import StoreKit
 // MARK: - Debug
 
 struct DKLogSettings {
+
     static var ShouldShowDetailedLogs   : Bool  = false
     static var DetailedLogFormat		= ">>> :line :className.:function --> :obj"
     static var DetailedLogDateFormat	= "yyyy-MM-dd HH:mm:ss.SSS"
@@ -50,18 +51,21 @@ func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = #file, function:
 // MARK: - Classes
 
 class PopToRootViewControllerSegue : UIStoryboardSegue {
+
     override func perform() {
         self.sourceViewController.navigationController?.popToRootViewControllerAnimated(true)
     }
 }
 
 class PopViewControllerSegue : UIStoryboardSegue {
+
     override func perform() {
         self.sourceViewController.navigationController?.popViewControllerAnimated(true)
     }
 }
 
 extension SKProduct {
+
     @available(*, deprecated=0.9, renamed="localizedPrice")
     func localisedPrice() -> String? {
         return self.localizedPrice()
@@ -114,12 +118,14 @@ extension RawRepresentable where RawValue == Int {
 }
 
 extension NSError {
+
     func log() {
         print("Error: \(self) \(self.userInfo)")
     }
 }
 
 extension UIView {
+
     func roundRect(radius radius: CGFloat) {
         self.layer.cornerRadius = radius
         self.layer.masksToBounds = true
@@ -138,8 +144,8 @@ extension UIView {
 	*/
     class func gradientLayer(rect: CGRect, topColor: UIColor, bottomColor: UIColor) -> UIView {
 
-        let gradientLayerView: UIView = UIView(frame: rect)
-        let gradient: CAGradientLayer = CAGradientLayer()
+        let gradientLayerView = UIView(frame: rect)
+        let gradient = CAGradientLayer()
         gradient.frame = gradientLayerView.bounds
         gradient.colors = [topColor.CGColor, bottomColor.CGColor]
 		gradient.startPoint = CGPoint(x: 0, y: -1.0)
@@ -350,9 +356,10 @@ extension UILabel {
 }
 
 extension UIDevice {
+
     //
     // To check if the current Device has a SimCard or not, we will read the Carrier informations
-    // if there are no carrier Informations, there is no sim and this function will return false
+    // If there are no carrier Informations, there is no sim and this function will return false
     //
     // For more informations read Apple Doc's for CTCarrier's mobileCountryCode:
     // From this Doc (https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/CTCarrier/index.html#//apple_ref/occ/instp/CTCarrier/mobileCountryCode):
@@ -366,11 +373,11 @@ extension UIDevice {
 }
 
 extension NSNumber {
-    //
-    // will return a String with the currency for the given Location
-    // can be used to display a Pricetag for an in App Product.
-    // take SKProduct.price for self
-    // and SKProduct.priceLocale for locae.
+
+    // Will return a String with the currency for the given Location
+    // Can be used to display a Pricetag for an in App Product.
+    // Take SKProduct.price for self
+    // And SKProduct.priceLocale for locale.
     func stringWithCurrencyForNumber(locale:NSLocale) -> String? {
         let formatter = NSNumberFormatter()
         formatter.locale = locale
