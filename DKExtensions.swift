@@ -131,6 +131,17 @@ extension UIView {
         self.layer.masksToBounds = true
     }
 
+    /**
+     Add a subview to the current object if the given one is not nil.
+
+     - parameter view: Optional UIView object. Will not be added if nil.
+     */
+    func addSubview(safe view: UIView?) {
+        if let _view = view {
+            self.addSubview(_view)
+        }
+    }
+
 	/**
 	Creates gradient view of given size with given colors
 	This function already exist in the DKHelper, but does not work in Swift.
