@@ -172,9 +172,9 @@ extension UIAlertView {
 
 	@available(iOS, renamed="UIAlertController.showErrorPopup", message="use UIAlertController instead.")
 	class func showErrorPopup(error: NSError?) {
-		// log error
+		// Log error
 		error?.log()
-		// find a valid message to display
+		// Find a valid message to display
 		var msg : String? = nil
 		if let errorMessage : String = error?.userInfo["error"] as? String {
 			msg = errorMessage
@@ -183,7 +183,7 @@ extension UIAlertView {
 		} else if let errorMessage = error?.localizedDescription where (errorMessage.characters.count > 0) {
 			msg = errorMessage
 		}
-		// show a popup
+		// Show a popup
 		if let _msg = msg {
 			self.showErrorMessage(_msg)
 		}
@@ -203,9 +203,9 @@ extension UIAlertView {
 @available(iOS 8.0, *)
 extension UIAlertController {
 	class func showErrorPopup(error: NSError?, presentingViewController: UIViewController? = UIApplication.sharedApplication().windows.first?.rootViewController) {
-		// log error
+		// Log error
 		error?.log()
-		// find a valid message to display
+		// Find a valid message to display
 		var msg : String? = nil
 		if let errorMessage : String = error?.userInfo["error"] as? String {
 			msg = errorMessage
@@ -214,7 +214,7 @@ extension UIAlertController {
 		} else if let errorMessage = error?.localizedDescription where (errorMessage.characters.isEmpty == false) {
 			msg = errorMessage
 		}
-		// show a popup
+		// Show a popup
 		if let _msg = msg {
 			self.showErrorMessage(_msg, presentingViewController: presentingViewController)
 		}
@@ -423,8 +423,8 @@ extension UIApplication {
 
 extension Int {
 
-	// will return a random number between the given range:
-	// e.g : let randomNumber = randoInt.randomNumber(4...8)
+	// Will return a random number between the given range:
+	// E.g : let randomNumber = randoInt.randomNumber(4...8)
 	static func randomNumber(range: Range<Int>) -> Int {
 		let min = range.startIndex
 		let max = range.endIndex
