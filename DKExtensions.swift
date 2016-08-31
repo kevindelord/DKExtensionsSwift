@@ -346,7 +346,7 @@ extension UILabel {
 	func textFitsWidth() -> Bool {
 		let actualSize = self.frame.size
 		self.sizeToFit()
-		if self.frame.size.width > actualSize.width {
+		if (self.frame.size.width > actualSize.width) {
 			self.frame.size = actualSize
 			return false
 		}
