@@ -260,7 +260,9 @@ extension String {
 extension Dictionary {
 
 	mutating func removeValuesOfType<T>(type: T.Type) {
-		let keysToRemove = Array(self.keys).filter { self[$0] is T }
+		let keysToRemove = Array(self.keys).filter {
+            self[$0] is T
+        }
 		for key in keysToRemove {
 			self.removeValueForKey(key)
 		}
@@ -333,11 +335,14 @@ extension UIImagePickerControllerSourceType {
 }
 
 extension UILabel {
-	//
-	// calculating, if size to fit would expand or shrink the label
-	// returns true if the label Size is smaller then before
-	// will not change the label' Size
-	//
+
+    /**
+     Calculates if size to fit would expand or shrink the label.
+
+     Will not change the size of the label.
+
+     - returns: true if the label Size is smaller than before
+     */
 	func textFitsWidth() -> Bool {
 		let actualSize = self.frame.size
 		self.sizeToFit()
@@ -368,16 +373,19 @@ extension UILabel {
 
 extension UIDevice {
 
-    //
-    // To check if the current Device has a SimCard or not, we will read the Carrier informations
-    // If there are no carrier Informations, there is no sim and this function will return false
-    //
-    // For more informations read Apple Doc's for CTCarrier's mobileCountryCode:
-    // From this Doc (https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/CTCarrier/index.html#//apple_ref/occ/instp/CTCarrier/mobileCountryCode):
-    //
-    // The value for this property is nil if any of the following apply:
-    // - There is no SIM card in the device. [...]
-    //
+    /**
+    To check if the current Device has a SimCard or not, we will read the Carrier informations
+	If there are no carrier Informations, there is no sim and this function will return false
+
+	For more informations read Apple Doc's for CTCarrier's mobileCountryCode:
+	From this Doc:
+    https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/CTCarrier/index.html#//apple_ref/occ/instp/CTCarrier/mobileCountryCode
+
+	The value for this property is nil if any of the following apply:
+	- There is no SIM card in the device. [...]
+
+     - returns: true if the current device has a SIM card.
+     */
     func hasSimCard() -> Bool {
         return (CTTelephonyNetworkInfo().subscriberCellularProvider?.mobileCountryCode != nil)
     }
@@ -415,7 +423,6 @@ extension UIApplication {
 
 extension Int {
 
-	//
 	// will return a random number between the given range:
 	// e.g : let randomNumber = randoInt.randomNumber(4...8)
 	static func randomNumber(range: Range<Int>) -> Int {
