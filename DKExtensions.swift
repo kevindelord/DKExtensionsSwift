@@ -431,3 +431,24 @@ extension Int {
 		return Int(arc4random_uniform(UInt32(max - min))) + min
 	}
 }
+
+protocol OptionalType {
+	associatedtype Wrapped
+	@warn_unused_result
+	func map<U>(@noescape f: (Wrapped) throws -> U) rethrows -> U?
+}
+
+extension Optional: OptionalType { }
+
+extension SequenceType where Generator.Element: OptionalType {
+	@warn_unused_result
+	func withoutOptionals() -> [Generator.Element.Wrapped] {
+		var result: [Generator.Element.Wrapped] = []
+		for element in self {
+			if let element = element.map({ $0 }) {
+				result.append(element)
+			}
+		}
+		return result
+	}
+}
