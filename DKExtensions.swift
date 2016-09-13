@@ -452,3 +452,33 @@ extension SequenceType where Generator.Element: OptionalType {
 		return result
 	}
 }
+
+extension NSURL {
+
+	enum URLConstructionError: ErrorType {
+		case UnableToConstruct
+	}
+
+	func addPath(path: String) -> NSURL {
+		return self.URLByAppendingPathComponent(path)
+	}
+
+	func addParameters(parameter: [String: AnyObject]) throws -> NSURL {
+		if let urlComponents = NSURLComponents(URL: self, resolvingAgainstBaseURL: false) {
+
+			var queryItems = (urlComponents.queryItems ?? [NSURLQueryItem]())
+
+			for (key, value) in parameter {
+				queryItems.append(NSURLQueryItem(name: key, value: "\(value)"))
+			}
+
+			urlComponents.queryItems = queryItems
+
+			if let url = urlComponents.URL {
+				return url
+			}
+		}
+
+		throw URLConstructionError.UnableToConstruct
+	}
+}
