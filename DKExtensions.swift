@@ -14,30 +14,30 @@ import StoreKit
 
 struct DKLogSettings {
 
-    static var ShouldShowDetailedLogs   : Bool  = false
-    static var DetailedLogFormat		= ">>> :line :className.:function --> :obj"
-    static var DetailedLogDateFormat	= "yyyy-MM-dd HH:mm:ss.SSS"
-	static private var dateFormatter	: NSDateFormatter {
-		let formatter = NSDateFormatter()
-		formatter.dateFormat = DKLogSettings.DetailedLogDateFormat
+    static var shouldShowDetailedLogs	: Bool = false
+    static var detailedLogFormat		= ">>> :line :className.:function --> :obj"
+    static var detailedLogDateFormat	= "yyyy-MM-dd HH:mm:ss.SSS"
+	static fileprivate var dateFormatter	: DateFormatter {
+		let formatter = DateFormatter()
+		formatter.dateFormat = DKLogSettings.detailedLogDateFormat
 		return formatter
 	}
 }
 
-func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = #file, function: String = #function, line: Int = #line) {
+func DKLog(_ verbose: Bool, _ obj: Any = "", file: String = #file, function: String = #function, line: Int = #line) {
 	#if DEBUG
         if (verbose == true) {
-			if (DKLogSettings.ShouldShowDetailedLogs == true),
-				let className = NSURL(string: file)?.lastPathComponent?.componentsSeparatedByString(".").first {
+			if (DKLogSettings.shouldShowDetailedLogs == true),
+				let className = NSURL(string: file)?.lastPathComponent?.components(separatedBy: ".").first {
 
-					var logStatement = DKLogSettings.DetailedLogFormat.stringByReplacingOccurrencesOfString(":line", withString: "\(line)")
-					logStatement = logStatement.stringByReplacingOccurrencesOfString(":className", withString: className)
-					logStatement = logStatement.stringByReplacingOccurrencesOfString(":function", withString: function)
-					logStatement = logStatement.stringByReplacingOccurrencesOfString(":obj", withString: "\(obj)")
+				var logStatement = DKLogSettings.detailedLogFormat.replacingOccurrences(of: ":line", with: "\(line)")
+					logStatement = logStatement.replacingOccurrences(of: ":className", with: className)
+					logStatement = logStatement.replacingOccurrences(of: ":function", with: function)
+					logStatement = logStatement.replacingOccurrences(of: ":obj", with: "\(obj)")
 
-					if (logStatement.containsString(":date")) {
-						let replacement = DKLogSettings.dateFormatter.stringFromDate(NSDate())
-						logStatement = logStatement.stringByReplacingOccurrencesOfString(":date", withString: "\(replacement)")
+				if (logStatement.contains(":date")) {
+					let replacement = DKLogSettings.dateFormatter.string(from: Date())
+					logStatement = logStatement.replacingOccurrences(of: ":date", with: "\(replacement)")
 					}
 
 					print(logStatement)
@@ -53,36 +53,36 @@ func DKLog(verbose: Bool, _ obj: AnyObject = "", file: String = #file, function:
 class PopToRootViewControllerSegue : UIStoryboardSegue {
 
     override func perform() {
-        self.sourceViewController.navigationController?.popToRootViewControllerAnimated(true)
+        _ = self.source.navigationController?.popToRootViewController(animated: true)
     }
 }
 
 class PopViewControllerSegue : UIStoryboardSegue {
 
     override func perform() {
-        self.sourceViewController.navigationController?.popViewControllerAnimated(true)
+        _ = self.source.navigationController?.popViewController(animated: true)
     }
 }
 
 extension SKProduct {
 
-    @available(*, deprecated=0.9, renamed="localizedPrice")
+    @available(*, deprecated: 0.9, renamed: "localizedPrice")
     func localisedPrice() -> String? {
         return self.localizedPrice()
     }
 
     func localizedPrice() -> String? {
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.formatterBehavior = NSNumberFormatterBehavior.BehaviorDefault
-        numberFormatter.numberStyle = .CurrencyStyle
+        let numberFormatter = NumberFormatter()
+        numberFormatter.formatterBehavior = NumberFormatter.Behavior.default
+        numberFormatter.numberStyle = .currency
         numberFormatter.locale = self.priceLocale
-        return numberFormatter.stringFromNumber(self.price)
+        return numberFormatter.string(from: self.price)
     }
 }
 
 // MARK: - Additions
 
-func += <KeyType, ValueType> (inout left: Dictionary<KeyType, ValueType>, right: Dictionary<KeyType, ValueType>) {
+func += <KeyType, ValueType> (left: inout Dictionary<KeyType, ValueType>, right: Dictionary<KeyType, ValueType>) {
     for (k, v) in right {
         left.updateValue(v, forKey: k)
     }
@@ -126,7 +126,7 @@ extension NSError {
 
 extension UIView {
 
-    func roundRect(radius radius: CGFloat) {
+    func roundRect(radius: CGFloat) {
         self.layer.cornerRadius = radius
         self.layer.masksToBounds = true
     }
@@ -153,25 +153,25 @@ extension UIView {
 
 	- returns: gradient view
 	*/
-    class func gradientLayer(rect: CGRect, topColor: UIColor, bottomColor: UIColor) -> UIView {
+    class func gradientLayer(_ rect: CGRect, topColor: UIColor, bottomColor: UIColor) -> UIView {
 
         let gradientLayerView = UIView(frame: rect)
         let gradient = CAGradientLayer()
         gradient.frame = gradientLayerView.bounds
-        gradient.colors = [topColor.CGColor, bottomColor.CGColor]
+        gradient.colors = [topColor.cgColor, bottomColor.cgColor]
 		gradient.startPoint = CGPoint(x: 0, y: -1.0)
 		gradient.endPoint = CGPoint(x: 0, y: 1.0)
-        gradientLayerView.layer.insertSublayer(gradient, atIndex: 0)
+        gradientLayerView.layer.insertSublayer(gradient, at: 0)
         return gradientLayerView
     }
 
 }
 
-@available(iOS, obsoleted=8.0, message="use UIAlertController instead.")
+@available(iOS, obsoleted: 8.0, message: "use UIAlertController instead.")
 extension UIAlertView {
 
-	@available(iOS, renamed="UIAlertController.showErrorPopup", message="use UIAlertController instead.")
-	class func showErrorPopup(error: NSError?) {
+	@available(iOS, renamed: "UIAlertController.showErrorPopup", message: "use UIAlertController instead.")
+	class func showErrorPopup(_ error: NSError?) {
 		// Log error
 		error?.log()
 		// Find a valid message to display
@@ -180,7 +180,7 @@ extension UIAlertView {
 			msg = errorMessage
 		} else if let errorMessage = error?.localizedFailureReason {
 			msg = errorMessage
-		} else if let errorMessage = error?.localizedDescription where (errorMessage.characters.count > 0) {
+		} else if let errorMessage = error?.localizedDescription , (errorMessage.characters.count > 0) {
 			msg = errorMessage
 		}
 		// Show a popup
@@ -189,20 +189,20 @@ extension UIAlertView {
 		}
 	}
 
-	@available(iOS, renamed="UIAlertController.showErrorMessage", message="use UIAlertController instead.")
-	class func showErrorMessage(message: String) {
+	@available(iOS, renamed: "UIAlertController.showErrorMessage", message: "use UIAlertController instead.")
+	class func showErrorMessage(_ message: String) {
 		self.showInfoMessage("Error", message: message)
 	}
 
-	@available(iOS, renamed="UIAlertController.showInfoMessage", message="use UIAlertController instead.")
-	class func showInfoMessage(title: String, message: String) {
+	@available(iOS, renamed: "UIAlertController.showInfoMessage", message: "use UIAlertController instead.")
+	class func showInfoMessage(_ title: String, message: String) {
 		UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK").show()
 	}
 }
 
 @available(iOS 8.0, *)
 extension UIAlertController {
-	class func showErrorPopup(error: NSError?, presentingViewController: UIViewController? = UIApplication.sharedApplication().windows.first?.rootViewController) {
+	class func showErrorPopup(_ error: NSError?, presentingViewController: UIViewController? = UIApplication.shared.windows.first?.rootViewController) {
 		// Log error
 		error?.log()
 		// Find a valid message to display
@@ -211,7 +211,7 @@ extension UIAlertController {
 			msg = errorMessage
 		} else if let errorMessage = error?.localizedFailureReason {
 			msg = errorMessage
-		} else if let errorMessage = error?.localizedDescription where (errorMessage.characters.isEmpty == false) {
+		} else if let errorMessage = error?.localizedDescription , (errorMessage.characters.isEmpty == false) {
 			msg = errorMessage
 		}
 		// Show a popup
@@ -220,14 +220,14 @@ extension UIAlertController {
 		}
 	}
 
-	class func showErrorMessage(message: String, presentingViewController: UIViewController? = UIApplication.sharedApplication().windows.first?.rootViewController) {
+	class func showErrorMessage(_ message: String, presentingViewController: UIViewController? = UIApplication.shared.windows.first?.rootViewController) {
 		self.showInfoMessage("Error", message: message, presentingViewController: presentingViewController)
 	}
 
-	class func showInfoMessage(title: String, message: String, presentingViewController: UIViewController? = UIApplication.sharedApplication().windows.first?.rootViewController) {
-		let ac = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-		ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-		presentingViewController?.presentViewController(ac, animated: true, completion: nil)
+	class func showInfoMessage(_ title: String, message: String, presentingViewController: UIViewController? = UIApplication.shared.windows.first?.rootViewController) {
+		let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+		ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+		presentingViewController?.present(ac, animated: true, completion: nil)
 	}
 }
 
@@ -238,12 +238,12 @@ extension String {
 	*/
 	var urlArguments : [String : String] {
 		var params = [String : String]()
-		for param in self.componentsSeparatedByString("&") {
-			let elts = param.componentsSeparatedByString("=")
+		for param in self.components(separatedBy: "&") {
+			let elts = param.components(separatedBy: "=")
 			if (elts.count == 2),
 				let
 				key = elts.first,
-				value = elts.last {
+				let value = elts.last {
 					params[key] = value
 			}
 		}
@@ -253,27 +253,27 @@ extension String {
     func isUserName() -> Bool {
         let regex = "[äÄüÜöÖßA-Z0-9a-z_\\s-]+"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-        return predicate.evaluateWithObject(self)
+        return predicate.evaluate(with: self)
     }
 }
 
 extension Dictionary {
 
-	mutating func removeValuesOfType<T>(type: T.Type) {
+	mutating func removeValues<T>(of type: T.Type) {
 		let keysToRemove = Array(self.keys).filter {
             self[$0] is T
         }
 		for key in keysToRemove {
-			self.removeValueForKey(key)
+			self.removeValue(forKey: key)
 		}
 	}
 }
 
 extension Array where Element: Equatable {
 
-	mutating func removeObject(item: Element) {
-		if let index = self.indexOf(item) {
-			self.removeAtIndex(index)
+	mutating func remove(object item: Element) {
+		if let index = self.index(of: item) {
+			self.remove(at: index)
 		}
 	}
 }
@@ -295,7 +295,7 @@ extension Array {
 		self = self.shuffled
 	}
 
-	func groupOf(num:Int) -> [[Element]] {
+	func group(of num:Int) -> [[Element]] {
 		var result = [[Element]]()
 		if (num > 0) {
 			for i in 0...((count / num) - 1) {
@@ -324,11 +324,11 @@ extension UIImagePickerControllerSourceType {
 
     func nameType() -> String {
         switch self {
-        case .PhotoLibrary:
+        case .photoLibrary:
             return "PhotoLibrary"
-        case .Camera:
+        case .camera:
             return "Camera"
-        case .SavedPhotosAlbum:
+        case .savedPhotosAlbum:
             return "SavedPhotosAlbum"
         }
     }
@@ -357,13 +357,13 @@ extension UILabel {
 	/**
 	Transforms the given text by replacing all characters with the passed replacement ("●" by default).
 
-	- parameter secureText: Text to secure and to set to the current label
+	- parameter originalText: Text to secure and to set to the current label
 	- parameter replacementText: String to set as secure character (default is "●")
 	*/
-	func setSecureText(secureText: String?, replacementText: String = "●") {
-		if let _secureText = secureText {
+	func setSecureText(from originalText: String?, replacementText: String = "●") {
+		if let _originalText = originalText {
 			var secureString = ""
-			for _ in 0..<_secureText.characters.count {
+			for _ in 0..<_originalText.characters.count {
 				secureString += replacementText
 			}
 			self.text = secureString
@@ -397,15 +397,15 @@ extension NSNumber {
     // Can be used to display a Pricetag for an in App Product.
     // Take SKProduct.price for self
     // And SKProduct.priceLocale for locale.
-    func stringWithCurrencyForNumber(locale:NSLocale) -> String? {
-        let formatter = NSNumberFormatter()
+    func stringWithCurrency(for locale:Locale) -> String? {
+        let formatter = NumberFormatter()
         formatter.locale = locale
         formatter.maximumFractionDigits = 2
         formatter.minimumFractionDigits = 2
         formatter.alwaysShowsDecimalSeparator = true
-        formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle
+        formatter.numberStyle = NumberFormatter.Style.currency
 
-        return formatter.stringFromNumber(self)
+        return formatter.string(from: self)
     }
 }
 
@@ -425,27 +425,25 @@ extension Int {
 
 	// Will return a random number between the given range:
 	// E.g : let randomNumber = randoInt.randomNumber(4...8)
-	static func randomNumber(range: Range<Int>) -> Int {
-		let min = range.startIndex
-		let max = range.endIndex
+	static func random(in range: Range<Int>) -> Int {
+		let min = range.lowerBound
+		let max = range.upperBound
 		return Int(arc4random_uniform(UInt32(max - min))) + min
 	}
 }
 
 protocol OptionalType {
 	associatedtype Wrapped
-	@warn_unused_result
-	func map<U>(@noescape f: (Wrapped) throws -> U) rethrows -> U?
+	
+	func map<U>(f: (Wrapped) throws -> U) rethrows -> U?
 }
 
-extension Optional: OptionalType { }
-
-extension SequenceType where Generator.Element: OptionalType {
-	@warn_unused_result
-	func withoutOptionals() -> [Generator.Element.Wrapped] {
-		var result: [Generator.Element.Wrapped] = []
+extension Sequence where Iterator.Element: OptionalType {
+	
+	func withoutOptionals() -> [Iterator.Element.Wrapped] {
+		var result: [Iterator.Element.Wrapped] = []
 		for element in self {
-			if let element = element.map({ $0 }) {
+			if let element = element.map(f: { $0 }) {
 				result.append(element)
 			}
 		}
@@ -453,32 +451,32 @@ extension SequenceType where Generator.Element: OptionalType {
 	}
 }
 
-extension NSURL {
+extension URL {
 
-	enum URLConstructionError: ErrorType {
-		case UnableToConstruct
+	enum URLConstructionError: Error {
+		case unableToConstruct
 	}
 
-	func addPath(path: String) -> NSURL? {
-		return self.URLByAppendingPathComponent(path)
+	func add(path component: String) -> URL? {
+		return self.appendingPathComponent(component)
 	}
 
-	func addParameters(parameter: [String: AnyObject]) throws -> NSURL {
-		if let urlComponents = NSURLComponents(URL: self, resolvingAgainstBaseURL: false) {
+	func add(parameters parameterArray: [String: AnyObject]) throws -> URL {
+		if var urlComponents = URLComponents(url: self, resolvingAgainstBaseURL: false) {
 
-			var queryItems = (urlComponents.queryItems ?? [NSURLQueryItem]())
+			var queryItems = (urlComponents.queryItems ?? [URLQueryItem]())
 
-			for (key, value) in parameter {
-				queryItems.append(NSURLQueryItem(name: key, value: "\(value)"))
+			for (key, value) in parameterArray {
+				queryItems.append(URLQueryItem(name: key, value: "\(value)"))
 			}
 
 			urlComponents.queryItems = queryItems
 
-			if let url = urlComponents.URL {
+			if let url = urlComponents.url {
 				return url
 			}
 		}
 
-		throw URLConstructionError.UnableToConstruct
+		throw URLConstructionError.unableToConstruct
 	}
 }
