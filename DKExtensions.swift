@@ -459,7 +459,7 @@ extension NSURL {
 		case UnableToConstruct
 	}
 
-	func addPath(path: String) -> NSURL {
+	func addPath(path: String) -> NSURL? {
 		return self.URLByAppendingPathComponent(path)
 	}
 
