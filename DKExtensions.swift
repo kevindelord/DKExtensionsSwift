@@ -502,4 +502,15 @@ extension NSURL {
 
 		throw URLConstructionError.UnableToConstruct
 	}
+
+	func addFragment(fragment: String) throws -> NSURL {
+		if let urlComponents = NSURLComponents(URL: self, resolvingAgainstBaseURL: false) {
+			urlComponents.fragment = fragment
+
+			if let url = urlComponents.URL {
+				return url
+			}
+		}
+		throw URLConstructionError.UnableToConstruct
+	}
 }
