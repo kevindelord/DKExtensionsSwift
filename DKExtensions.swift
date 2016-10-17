@@ -503,14 +503,24 @@ extension NSURL {
 		throw URLConstructionError.UnableToConstruct
 	}
 
+	/**
+	Create a new `NSURL` by adding the given fragment.
+ 
+	- parameter fragment	: The fragment as `String` which should be added.
+	
+	- returns				: The new `NSURL` with the added fragment.
+	*/
 	func addFragment(fragment: String) throws -> NSURL {
+		// Get the `NSURLComponents` of this `NSURL` object
 		if let urlComponents = NSURLComponents(URL: self, resolvingAgainstBaseURL: false) {
+			// Add the fragment
 			urlComponents.fragment = fragment
-
+			// Create the new URL and return it
 			if let url = urlComponents.URL {
 				return url
 			}
 		}
+		// Throw an error as the `NSURLComponents` couldn't be created
 		throw URLConstructionError.UnableToConstruct
 	}
 }
