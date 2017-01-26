@@ -497,6 +497,8 @@ extension NSURL {
 		if let url = urlComponents.URL {
 			return url
 		}
+
+		return nil
 	}
 
 	/**
