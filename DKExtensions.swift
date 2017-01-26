@@ -476,52 +476,52 @@ extension SequenceType where Generator.Element: OptionalType {
 
 extension NSURL {
 
-	enum URLConstructionError: ErrorType {
-		case UnableToConstruct
-	}
-
 	func addPath(path: String) -> NSURL? {
 		return self.URLByAppendingPathComponent(path)
 	}
 
-	func addParameters(parameter: [String: AnyObject]) throws -> NSURL {
-		if let urlComponents = NSURLComponents(URL: self, resolvingAgainstBaseURL: false) {
+	func addParameters(parameter: [String: AnyObject]) -> NSURL? {
 
-			var queryItems = (urlComponents.queryItems ?? [NSURLQueryItem]())
-
-			for (key, value) in parameter {
-				queryItems.append(NSURLQueryItem(name: key, value: "\(value)"))
-			}
-
-			urlComponents.queryItems = queryItems
-
-			if let url = urlComponents.URL {
-				return url
-			}
+		guard let urlComponents = NSURLComponents(URL: self, resolvingAgainstBaseURL: false) else {
+			return nil
 		}
 
-		throw URLConstructionError.UnableToConstruct
+		var queryItems = (urlComponents.queryItems ?? [NSURLQueryItem]())
+
+		for (key, value) in parameter {
+			queryItems.append(NSURLQueryItem(name: key, value: "\(value)"))
+		}
+
+		urlComponents.queryItems = queryItems
+
+		if let url = urlComponents.URL {
+			return url
+		}
+
+		return nil
 	}
 
 	/**
 	Create a new `NSURL` by adding the given fragment.
- 
+
 	- parameter fragment	: The fragment as `String` which should be added.
-	
+
 	- returns				: The new `NSURL` with the added fragment.
 	*/
-	func addFragment(fragment: String) throws -> NSURL {
+	func addFragment(fragment: String) -> NSURL? {
 		// Get the `NSURLComponents` of this `NSURL` object
-		if let urlComponents = NSURLComponents(URL: self, resolvingAgainstBaseURL: false) {
-			// Add the fragment
-			urlComponents.fragment = fragment
-			// Create the new URL and return it
-			if let url = urlComponents.URL {
-				return url
-			}
+		guard let urlComponents = NSURLComponents(URL: self, resolvingAgainstBaseURL: false) else {
+			return nil
 		}
-		// Throw an error as the `NSURLComponents` couldn't be created
-		throw URLConstructionError.UnableToConstruct
+
+		// Add the fragment
+		urlComponents.fragment = fragment
+		// Create the new URL and return it
+		if let url = urlComponents.URL {
+			return url
+		}
+
+		return nil
 	}
 }
 
