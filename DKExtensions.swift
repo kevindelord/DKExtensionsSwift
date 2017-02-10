@@ -339,6 +339,12 @@ extension Array {
 	subscript (safe index: Int) -> Element? {
 		return ((self.indices ~= index) ? self[index] : nil)
 	}
+
+	mutating func append(safe newElement: Element?) {
+		if let element = newElement {
+			self.append(element)
+		}
+	}
 }
 
 extension UIImagePickerControllerSourceType {
