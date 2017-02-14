@@ -149,7 +149,7 @@ extension UIView {
      */
     func bringSubviewToFront(safe view: UIView?) {
         if let _view = view {
-            self.bringSubviewToFront(_view)
+            self.bringSubview(toFront: _view)
         }
     }
 
@@ -160,7 +160,7 @@ extension UIView {
      */
     func sendSubviewToBack(safe view: UIView?) {
         if let _view = view {
-            self.sendSubviewToBack(_view)
+            self.sendSubview(toBack: _view)
         }
     }
 	/**
@@ -186,39 +186,6 @@ extension UIView {
         return gradientLayerView
     }
 
-}
-
-@available(iOS, obsoleted: 8.0, message: "use UIAlertController instead.")
-extension UIAlertView {
-
-	@available(iOS, renamed: "UIAlertController.showErrorPopup", message: "use UIAlertController instead.")
-	class func showErrorPopup(_ error: NSError?) {
-		// Log error
-		error?.log()
-		// Find a valid message to display
-		var msg : String? = nil
-		if let errorMessage : String = error?.userInfo["error"] as? String {
-			msg = errorMessage
-		} else if let errorMessage = error?.localizedFailureReason {
-			msg = errorMessage
-		} else if let errorMessage = error?.localizedDescription , (errorMessage.characters.count > 0) {
-			msg = errorMessage
-		}
-		// Show a popup
-		if let _msg = msg {
-			self.showErrorMessage(_msg)
-		}
-	}
-
-	@available(iOS, renamed: "UIAlertController.showErrorMessage", message: "use UIAlertController instead.")
-	class func showErrorMessage(_ message: String) {
-		self.showInfoMessage("Error", message: message)
-	}
-
-	@available(iOS, renamed: "UIAlertController.showInfoMessage", message: "use UIAlertController instead.")
-	class func showInfoMessage(_ title: String, message: String) {
-		UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK").show()
-	}
 }
 
 @available(iOS 8.0, *)
@@ -508,24 +475,24 @@ extension URL {
 	}
 
 	/**
-	Create a new `NSURL` by adding the given fragment.
+	Create a new `URL` by adding the given fragment.
  
 	- parameter fragment	: The fragment as `String` which should be added.
 	
-	- returns				: The new `NSURL` with the added fragment.
+	- returns				: The new `URL` with the added fragment.
 	*/
-	func addFragment(fragment: String) throws -> NSURL {
+	func addFragment(fragment: String) throws -> URL {
 		// Get the `NSURLComponents` of this `NSURL` object
-		if let urlComponents = NSURLComponents(URL: self, resolvingAgainstBaseURL: false) {
+		if let urlComponents = NSURLComponents(url: self, resolvingAgainstBaseURL: false) {
 			// Add the fragment
 			urlComponents.fragment = fragment
 			// Create the new URL and return it
-			if let url = urlComponents.URL {
+			if let url = urlComponents.url {
 				return url
 			}
 		}
 		// Throw an error as the `NSURLComponents` couldn't be created
-		throw URLConstructionError.UnableToConstruct
+		throw URLConstructionError.unableToConstruct
 	}
 }
 
@@ -538,10 +505,10 @@ extension NSObject {
 		let mirror = Mirror(reflecting: self)
 		let properties = mirror.children.map() { (label: String?, value: Any) -> String in
 			guard let label = label else {
-				return "unknown (\(value.dynamicType)) = \(value)"
+				return "unknown (\(type(of: value))) = \(value)"
 			}
-			return "\(label) (\(value.dynamicType)) = \(value)"
+			return "\(label) (\(type(of: value))) = \(value)"
 		}
-		return properties.joinWithSeparator("\n")
+		return properties.joined(separator: "\n")
 	}
 }
