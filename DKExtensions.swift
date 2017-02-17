@@ -243,6 +243,16 @@ extension String {
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         return predicate.evaluate(with: self)
     }
+
+	mutating func stringByRemovingRegexMatches(pattern: String, replaceWith: String = "") {
+		do {
+			let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
+			let range = NSRange(0..<self.utf16.count)
+			self = regex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: replaceWith)
+		} catch {
+			return
+		}
+	}
 }
 
 extension Dictionary {
