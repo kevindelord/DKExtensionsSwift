@@ -244,7 +244,7 @@ extension String {
         return predicate.evaluate(with: self)
     }
 
-	mutating func stringByRemovingRegexMatches(pattern: String, replaceWith: String = "") {
+	mutating func removeRegexMatches(pattern: String, replaceWith: String = "") {
 		do {
 			let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
 			let range = NSRange(0..<self.utf16.count)
