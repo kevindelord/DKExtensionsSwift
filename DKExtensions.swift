@@ -253,6 +253,24 @@ extension String {
 			return
 		}
 	}
+
+	/// Returns an array of matches for a given pattern.
+	///
+	/// - Parameter pattern: Regex pattern to use to find matches.
+	/// - Returns: An array of string objects matching the pattern.
+	func regexMatches(pattern: String) -> [String] {
+		do {
+			let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
+			let range = NSRange(0..<self.characters.count)
+			let results = regex.matches(in: self, options: [], range: range)
+			let stringResults = results.map({ (result: NSTextCheckingResult) -> String in
+				return (self as NSString).substring(with: result.range)
+			})
+			return stringResults
+		} catch {
+			return []
+		}
+	}
 }
 
 extension Dictionary {
