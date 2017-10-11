@@ -301,7 +301,7 @@ extension Array {
 		for index in 0..<elements.count {
 			let newIndex = Int(arc4random_uniform(UInt32(elements.count-index))) + index
 			if (index != newIndex) { // Check if you are not trying to swap an element with itself
-				swap(&elements[index], &elements[newIndex])
+				elements.swapAt(index, newIndex)
 			}
 		}
 		return elements
