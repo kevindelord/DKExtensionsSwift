@@ -199,7 +199,7 @@ extension UIAlertController {
 			msg = errorMessage
 		} else if let errorMessage = error?.localizedFailureReason {
 			msg = errorMessage
-		} else if let errorMessage = error?.localizedDescription , (errorMessage.characters.isEmpty == false) {
+		} else if let errorMessage = error?.localizedDescription , (errorMessage.isEmpty == false) {
 			msg = errorMessage
 		}
 		// Show a popup
@@ -261,7 +261,7 @@ extension String {
 	func regexMatches(pattern: String) -> [String] {
 		do {
 			let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
-			let range = NSRange(0..<self.characters.count)
+			let range = NSRange(0..<self.count)
 			let results = regex.matches(in: self, options: [], range: range)
 			let stringResults = results.map({ (result: NSTextCheckingResult) -> String in
 				return (self as NSString).substring(with: result.range)
@@ -385,7 +385,7 @@ extension UILabel {
 	func setSecureText(from originalText: String?, replacementText: String = "●") {
 		if let _originalText = originalText {
 			var secureString = ""
-			for _ in 0..<_originalText.characters.count {
+			for _ in 0..<_originalText.count {
 				secureString += replacementText
 			}
 			self.text = secureString
