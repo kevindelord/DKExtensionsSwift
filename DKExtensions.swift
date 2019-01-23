@@ -149,7 +149,7 @@ extension UIView {
      */
     func bringSubviewToFront(safe view: UIView?) {
         if let _view = view {
-            self.bringSubview(toFront: _view)
+			self.bringSubviewToFront(_view)
         }
     }
 
@@ -160,7 +160,7 @@ extension UIView {
      */
     func sendSubviewToBack(safe view: UIView?) {
         if let _view = view {
-            self.sendSubview(toBack: _view)
+			self.sendSubviewToBack(_view)
         }
     }
 	/**
@@ -342,7 +342,7 @@ extension Array {
 	}
 }
 
-extension UIImagePickerControllerSourceType {
+extension UIImagePickerController.SourceType {
 
     func nameType() -> String {
         switch self {
@@ -435,7 +435,7 @@ extension UIApplication {
 
 	/// Boolean value indicating whether the current application is running on a simulator or not.
 	static var isRunningOnSimulator : Bool {
-		#if (arch(i386) || arch(x86_64)) && os(iOS)
+		#if targetEnvironment(simulator)
 			return true
 		#else
 			return false
